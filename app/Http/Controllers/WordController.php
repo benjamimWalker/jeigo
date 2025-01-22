@@ -8,19 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
-/**
- * @OA\Info(
- *    title="Jeigo API",
- *    description="Dictionary API",
- *    version="1.0.0",
- * )
- * @OA\SecurityScheme(
- *      type="apiKey",
- *      in="header",
- *      securityScheme="token",
- *      name="Authorization"
- *  )
- */
 class WordController extends Controller
 {
     /**
