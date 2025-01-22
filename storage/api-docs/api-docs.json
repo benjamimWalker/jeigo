@@ -1,0 +1,114 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Jeigo API",
+        "description": "Dictionary API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "api/entries/en": {
+            "get": {
+                "tags": [
+                    "Words"
+                ],
+                "summary": "List words",
+                "operationId": "7ef39d6f0cdc5ae67202f40fcff2909d",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Cursor",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "benches"
+                                            },
+                                            "collectionFormat": "multi"
+                                        },
+                                        "path": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/entries/en"
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 20
+                                        },
+                                        "next_cursor": {
+                                            "type": "string",
+                                            "example": "eyJ3b3Jkcy5pZCI6MzE0ODksIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+                                        },
+                                        "next_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/entries/en?cursor=eyJ3b3Jkcy5pZCI6MzE0ODksIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+                                        },
+                                        "prev_cursor": {
+                                            "type": "string",
+                                            "example": "eyJ3b3Jkcy5pZCI6MzE0NzAsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/entries/en?cursor=eyJ3b3Jkcy5pZCI6MzE0NzAsIl9wb2ludHNUb05leHRJdGVtcyI6ZmFsc2V9"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "token": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Words",
+            "description": "Words"
+        }
+    ]
+}
