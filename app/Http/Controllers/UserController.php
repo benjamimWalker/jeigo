@@ -55,9 +55,9 @@ class UserController extends Controller
      */
     public function favoriteWords(Request $request): JsonResponse
     {
-        $page = $request->query('page', '');
+        $cursor = $request->query('cursor', '');
         $perPage = $request->query('per_page', config('jeigo.per_page'));
-        $cacheKey = 'favorite_words_' . $perPage . '_' . $page;
+        $cacheKey = 'favorite_words_' . $perPage . '_' . $cursor;
 
         $startTime = microtime(true);
         $cacheHeader = cache()->has($cacheKey) ? 'HIT' : 'MISS';
@@ -69,7 +69,7 @@ class UserController extends Controller
                 ->user()
                 ->favoriteWords()
                 ->withPivot('created_at')
-                ->paginate($perPage)
+                ->cursorPaginate($perPage)
         );
 
         $results = collect($data->items())->map(
@@ -78,20 +78,15 @@ class UserController extends Controller
                 'added' => $favorite->pivot->created_at
             ]
         );
+
         return response()->json([
             'results' => $results,
-            'current_page' => $data->currentPage(),
-            'first_page_url' => $data->url(1),
-            'from' => $data->firstItem(),
-            'last_page' => $data->lastPage(),
-            'last_page_url' => $data->url($data->lastPage()),
-            'links' => $data->links(),
-            'next_page_url' => $data->nextPageUrl(),
-            'path' => $data->url($data->currentPage()),
+            'path' => $data->url($data->cursor()),
             'per_page' => $data->perPage(),
-            'prev_page_url' => $data->previousPageUrl(),
-            'to' => $data->lastItem(),
-            'total' => $data->total()
+            'next_cursor' => $data->nextCursor(),
+            'next_page_url' => $data->nextPageUrl(),
+            'prev_cursor' => $data->previousCursor(),
+            'prev_page_url' => $data->previousPageUrl()
         ])
             ->header('x-cache', $cacheHeader)
             ->header('x-response-time', (microtime(true) - $startTime) * 1000);
