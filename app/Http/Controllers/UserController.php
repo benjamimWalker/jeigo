@@ -126,4 +126,34 @@ class UserController extends Controller
 
         return response()->noContent();
     }
+
+    /**
+     * Unfavorite a word
+     * @OA\Delete (
+     *     path="api/entries/en/{word}/unfavorite",
+     *     tags={"Words"},
+     *     security={ {"token": {} }},
+     *     @OA\Parameter (
+     *         name="word",
+     *         in="path",
+     *         description="The ID of the word to unfavorite",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=36)
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="No Content (word unfavorited successfully)"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Word not found"
+     *     )
+     * )
+     */
+    public function unfavoriteAWord(int $wordId): Response
+    {
+        auth()->user()->favoriteWords()->detach($wordId);
+
+        return response()->noContent();
+    }
 }

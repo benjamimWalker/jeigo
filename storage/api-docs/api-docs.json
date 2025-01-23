@@ -300,6 +300,40 @@
                 ]
             }
         },
+        "api/entries/en/{word}/unfavorite": {
+            "delete": {
+                "tags": [
+                    "Words"
+                ],
+                "summary": "Unfavorite a word",
+                "operationId": "50f82d4a3924da3a9e2650d82a125b6f",
+                "parameters": [
+                    {
+                        "name": "word",
+                        "in": "path",
+                        "description": "The ID of the word to unfavorite",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 36
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content (word unfavorited successfully)"
+                    },
+                    "404": {
+                        "description": "Word not found"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "api/entries/en": {
             "get": {
                 "tags": [
