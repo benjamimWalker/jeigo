@@ -19,6 +19,7 @@ Route::prefix('auth')->group(function () {
 
 Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/me'], function () {
     Route::get('favorites', [UserController::class, 'favoriteWords'])->name('user.favorites');
+    Route::get('history', [UserController::class, 'wordsHistory'])->name('user.history');
 });
 
 Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'entries/en'], function () {

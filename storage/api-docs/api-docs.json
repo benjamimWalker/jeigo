@@ -334,6 +334,95 @@
                 ]
             }
         },
+        "api/user/me/history": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "List words history",
+                "operationId": "61128cd350d11f3492e691d18ceea44d",
+                "parameters": [
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Cursor for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "word": {
+                                                        "type": "string",
+                                                        "example": "aah"
+                                                    },
+                                                    "added": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-01-23T11:52:37.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "path": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/user/me/history?cursor=eyJ3b3Jkcy5pZCI6MywiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ"
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 3
+                                        },
+                                        "next_cursor": {
+                                            "type": "string",
+                                            "example": null
+                                        },
+                                        "next_page_url": {
+                                            "type": "string",
+                                            "example": null
+                                        },
+                                        "prev_cursor": {
+                                            "type": "string",
+                                            "example": "eyJ3b3Jkcy5pZCI6NCwiX3BvaW50c1RvTmV4dEl0ZW1zIjpmYWxzZX0"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/user/me/history?cursor=eyJ3b3Jkcy5pZCI6NCwiX3BvaW50c1RvTmV4dEl0ZW1zIjpmYWxzZX0"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "api/entries/en": {
             "get": {
                 "tags": [

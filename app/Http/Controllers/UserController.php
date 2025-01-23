@@ -55,41 +55,7 @@ class UserController extends Controller
      */
     public function favoriteWords(Request $request): JsonResponse
     {
-        $cursor = $request->query('cursor', '');
-        $perPage = $request->query('per_page', config('jeigo.per_page'));
-        $cacheKey = 'favorite_words_' . $perPage . '_' . $cursor;
-
-        $startTime = microtime(true);
-        $cacheHeader = cache()->has($cacheKey) ? 'HIT' : 'MISS';
-
-        $data = cache()->remember(
-            $cacheKey,
-            60 * 60 * 24 * 30,
-            fn() => auth()
-                ->user()
-                ->favoriteWords()
-                ->withPivot('created_at')
-                ->cursorPaginate($perPage)
-        );
-
-        $results = collect($data->items())->map(
-            fn(Word $favorite) => [
-                'word' => $favorite->word,
-                'added' => $favorite->pivot->created_at
-            ]
-        );
-
-        return response()->json([
-            'results' => $results,
-            'path' => $data->url($data->cursor()),
-            'per_page' => $data->perPage(),
-            'next_cursor' => $data->nextCursor(),
-            'next_page_url' => $data->nextPageUrl(),
-            'prev_cursor' => $data->previousCursor(),
-            'prev_page_url' => $data->previousPageUrl()
-        ])
-            ->header('x-cache', $cacheHeader)
-            ->header('x-response-time', (microtime(true) - $startTime) * 1000);
+        return $this->paginateWords($request, 'favoriteWords', 'favorite_words');
     }
 
     /**
@@ -150,5 +116,93 @@ class UserController extends Controller
         auth()->user()->favoriteWords()->detach($wordId);
 
         return response()->noContent();
+    }
+
+    /**
+     * List words history
+     * @OA\Get (
+     *     path="api/user/me/history",
+     *     tags={"User"},
+     *     security={ {"token": {} }},
+     *     @OA\Parameter (
+     *         name="cursor",
+     *         in="query",
+     *         description="Cursor for pagination",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter (
+     *         name="per_page",
+     *         in="query",
+     *         description="Items per page",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="results",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="word", type="string", example="aah"),
+     *                     @OA\Property(property="added", type="string", format="date-time", example="2025-01-23T11:52:37.000000Z")
+     *                 )
+     *             ),
+     *             @OA\Property(property="path", type="string", example="http://localhost/api/user/me/history?cursor=eyJ3b3Jkcy5pZCI6MywiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ"),
+     *             @OA\Property(property="per_page", type="integer", example=3),
+     *             @OA\Property(property="next_cursor", type="string", example=null),
+     *             @OA\Property(property="next_page_url", type="string", example=null),
+     *             @OA\Property(property="prev_cursor", type="string", example="eyJ3b3Jkcy5pZCI6NCwiX3BvaW50c1RvTmV4dEl0ZW1zIjpmYWxzZX0"),
+     *             @OA\Property(property="prev_page_url", type="string", example="http://localhost/api/user/me/history?cursor=eyJ3b3Jkcy5pZCI6NCwiX3BvaW50c1RvTmV4dEl0ZW1zIjpmYWxzZX0")
+     *         )
+     *     )
+     * )
+     */
+
+    public function wordsHistory(Request $request): JsonResponse
+    {
+        return $this->paginateWords($request, 'wordHistory', 'history_words');
+    }
+
+    private function paginateWords(Request $request, string $relation, string $cachePrefix): JsonResponse
+    {
+        $cursor = $request->query('cursor', '');
+        $perPage = $request->query('per_page', config('jeigo.per_page'));
+        $cacheKey = $cachePrefix . '_' . $perPage . '_' . $cursor;
+
+        $startTime = microtime(true);
+        $cacheHeader = cache()->has($cacheKey) ? 'HIT' : 'MISS';
+
+        $data = cache()->remember(
+            $cacheKey,
+            60 * 60 * 24 * 30,
+            fn() => auth()
+                ->user()
+                ->{$relation}()
+                ->withPivot('created_at')
+                ->cursorPaginate($perPage)
+        );
+
+        $results = collect($data->items())->map(
+            fn(Word $word) => [
+                'word' => $word->word,
+                'added' => $word->pivot->created_at,
+            ]
+        );
+
+        return response()->json([
+            'results' => $results,
+            'path' => $data->url($data->cursor()),
+            'per_page' => $data->perPage(),
+            'next_cursor' => $data->nextCursor(),
+            'next_page_url' => $data->nextPageUrl(),
+            'prev_cursor' => $data->previousCursor(),
+            'prev_page_url' => $data->previousPageUrl(),
+        ])
+            ->header('x-cache', $cacheHeader)
+            ->header('x-response-time', (microtime(true) - $startTime) * 1000);
     }
 }
