@@ -55,9 +55,9 @@ class UserController extends Controller
      */
     public function favoriteWords(Request $request): JsonResponse
     {
-        $cursor = $request->query('cursor', '');
+        $page = $request->query('page', '');
         $perPage = $request->query('per_page', config('jeigo.per_page'));
-        $cacheKey = 'favorite_words_' . $perPage . '_' . $cursor;
+        $cacheKey = 'favorite_words_' . $perPage . '_' . $page;
 
         $startTime = microtime(true);
         $cacheHeader = cache()->has($cacheKey) ? 'HIT' : 'MISS';
