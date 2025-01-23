@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,10 @@ Route::prefix('auth')->group(function () {
     Route::post('signin', [AuthController::class, 'login'])
         ->name('signin')
         ->middleware('throttle:7,1');
+});
+
+Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/me'], function () {
+    Route::get('favorites', [UserController::class, 'favoriteWords'])->name('user.favorites');
 });
 
 Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'entries/en'], function () {

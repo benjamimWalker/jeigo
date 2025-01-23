@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasBelongsToManyEvents;
 
     /**
      * The attributes that are mass assignable.
@@ -52,5 +53,32 @@ class User extends Authenticatable
     public function favoriteWords(): BelongsToMany
     {
         return $this->belongsToMany(Word::class, 'user_word_favorite')->withPivot(['created_at']);
+    }
+
+    public static function saved($callback): void
+    {
+        cache()->flush();
+    }
+
+    public static function deleted($callback): void
+    {
+        cache()->flush();
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::belongsToManyAttached(function ($relation, $parent, $ids) {
+            if ($relation === 'favoriteWords' || $relation === 'wordHistory') {
+                cache()->flush();
+            }
+        });
+
+        static::belongsToManyDetached(function ($relation, $parent, $ids) {
+            if ($relation === 'favoriteWords' || $relation === 'wordHistory') {
+                cache()->flush();
+            }
+        });
     }
 }

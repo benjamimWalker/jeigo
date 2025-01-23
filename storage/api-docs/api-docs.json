@@ -177,6 +177,95 @@
                 }
             }
         },
+        "api/user/me/favorites": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "List favorite words",
+                "operationId": "ccfa2730efe2f7577c3d61f90f6c056a",
+                "parameters": [
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Cursor for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "word": {
+                                                        "type": "string",
+                                                        "example": "aahed"
+                                                    },
+                                                    "added": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-01-22T22:59:15.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "path": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/user/me/favorites"
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 4
+                                        },
+                                        "next_cursor": {
+                                            "type": "string",
+                                            "example": "eyJ3b3Jkcy5pZCI6OCwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ"
+                                        },
+                                        "next_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/user/me/favorites?cursor=eyJ3b3Jkcy5pZCI6OCwiX3BvaW50c1RvTmV4dEl0ZW1zIjp0cnVlfQ"
+                                        },
+                                        "prev_cursor": {
+                                            "type": "string",
+                                            "example": "eyJ3b3Jkcy5pZCI6NSwiX3BvaW50c1RvTmV4dEl0ZW1zIjpmYWxzZX0"
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost/api/user/me/favorites?cursor=eyJ3b3Jkcy5pZCI6NSwiX3BvaW50c1RvTmV4dEl0ZW1zIjpmYWxzZX0"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "api/entries/en": {
             "get": {
                 "tags": [
@@ -280,6 +369,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "User",
+            "description": "User"
         },
         {
             "name": "Words",
