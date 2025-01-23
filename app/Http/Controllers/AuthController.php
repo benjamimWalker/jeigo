@@ -60,7 +60,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         if (Auth::attempt($request->only('email', 'password'))) {
-            $user = Auth::user();
+            $user = \auth()->user();
             $user->tokens()->delete();
 
             return response()->json([

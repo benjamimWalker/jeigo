@@ -69,7 +69,7 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::belongsToManyAttached(function ($relation, $parent, $ids) {
+        static::belongsToManySynced(function ($relation, $parent, $ids) {
             if ($relation === 'favoriteWords' || $relation === 'wordHistory') {
                 cache()->flush();
             }

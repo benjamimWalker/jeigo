@@ -266,6 +266,40 @@
                 ]
             }
         },
+        "api/entries/en/{word}/favorite": {
+            "post": {
+                "tags": [
+                    "Words"
+                ],
+                "summary": "Favorite a word",
+                "operationId": "55fae0ff1a5b085f880666a53f24ef0f",
+                "parameters": [
+                    {
+                        "name": "word",
+                        "in": "path",
+                        "description": "The ID of the word to favorite",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 35
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content (word favorited successfully)"
+                    },
+                    "404": {
+                        "description": "Word not found"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "api/entries/en": {
             "get": {
                 "tags": [

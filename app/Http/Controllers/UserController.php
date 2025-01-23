@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Word;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use function auth;
 
 class UserController extends Controller
@@ -94,5 +95,35 @@ class UserController extends Controller
         ])
             ->header('x-cache', $cacheHeader)
             ->header('x-response-time', (microtime(true) - $startTime) * 1000);
+    }
+
+    /**
+     * Favorite a word
+     * @OA\Post (
+     *     path="api/entries/en/{word}/favorite",
+     *     tags={"Words"},
+     *     security={ {"token": {} }},
+     *     @OA\Parameter (
+     *         name="word",
+     *         in="path",
+     *         description="The ID of the word to favorite",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=35)
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="No Content (word favorited successfully)"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Word not found"
+     *     )
+     * )
+     */
+    public function favoriteAWord(int $wordId): Response
+    {
+        auth()->user()->favoriteWords()->syncWithoutDetaching([$wordId]);
+
+        return response()->noContent();
     }
 }
