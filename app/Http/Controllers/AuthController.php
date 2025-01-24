@@ -14,7 +14,7 @@ class AuthController extends Controller
     /**
      * Register
      * @OA\Post (
-     *     path="/api/auth/signin",
+     *     path="auth/signin",
      *     tags={"Auth"},
      *     @OA\RequestBody(
      *         @OA\MediaType(
@@ -79,7 +79,7 @@ class AuthController extends Controller
     /**
      * Register
      * @OA\Post (
-     *     path="/api/auth/signup",
+     *     path="auth/signup",
      *     tags={"Auth"},
      *     @OA\RequestBody(
      *         @OA\MediaType(

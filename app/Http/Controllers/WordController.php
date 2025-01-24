@@ -15,7 +15,7 @@ class WordController extends Controller
     /**
      * List words
      * @OA\Get (
-     *     path="api/entries/en",
+     *     path="entries/en",
      *     tags={"Words"},
      *     security={ {"token": {} }},
      *     @OA\Parameter (
@@ -91,11 +91,11 @@ class WordController extends Controller
      * Retrieve word information from the dictionary.
      *
      * @OA\Get(
-     *     path="/api/entries/en/{word}",
+     *     path="entries/en/{word}",
      *     summary="Get word details",
      *     description="Returns details about the given word, including meanings, phonetics, and source links.",
      *     operationId="getWordDetails",
-     *     tags={"Dictionary"},
+     *     tags={"Words"},
      *     @OA\Parameter(
      *         name="word",
      *         in="path",

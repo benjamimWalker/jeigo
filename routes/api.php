@@ -3,13 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WordController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+Route::get('', fn () => response()->json(['message' => 'Fullstack Challenge 🏅 - Dictionary']));
 Route::prefix('auth')->group(function () {
     Route::post('signup', [AuthController::class, 'register'])->name('signup');
     Route::post('signin', [AuthController::class, 'login'])
@@ -18,6 +14,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/me'], function () {
+    Route::get('', [UserController::class, 'me'])->name('user.me');
     Route::get('favorites', [UserController::class, 'favoriteWords'])->name('user.favorites');
     Route::get('history', [UserController::class, 'wordsHistory'])->name('user.history');
 });

@@ -11,9 +11,48 @@ use function auth;
 class UserController extends Controller
 {
     /**
+     * Get the authenticated user's details.
+     *
+     * @OA\Get(
+     *     path="user/me",
+     *     summary="Get authenticated user details",
+     *     description="Returns details about the currently authenticated user.",
+     *     operationId="getAuthenticatedUser",
+     *     tags={"User"},
+     *     security={
+     *         {"bearerAuth": {}}
+     *     },
+     *     @OA\Response(
+     *         response=200,
+     *         description="User details retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="string", format="uuid", example="9e0896b5-8e6f-45b0-ad81-2d1d03e70a2b"),
+     *             @OA\Property(property="name", type="string", example="John"),
+     *             @OA\Property(property="email", type="string", format="email", example="john@testo.com"),
+     *             @OA\Property(property="email_verified_at", type="string", format="date-time", nullable=true, example=null),
+     *             @OA\Property(property="created_at", type="string", format="date-time", example="2025-01-23T01:54:14.000000Z"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2025-01-23T01:54:14.000000Z")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
+     *         )
+     *     )
+     * )
+     */
+    public function me(): JsonResponse
+    {
+        return response()->json(auth()->user());
+    }
+    /**
      * List favorite words
      * @OA\Get (
-     *     path="api/user/me/favorites",
+     *     path="user/me/favorites",
      *     tags={"User"},
      *     security={ {"token": {} }},
      *     @OA\Parameter (
@@ -61,7 +100,7 @@ class UserController extends Controller
     /**
      * Favorite a word
      * @OA\Post (
-     *     path="api/entries/en/{word}/favorite",
+     *     path="entries/en/{word}/favorite",
      *     tags={"Words"},
      *     security={ {"token": {} }},
      *     @OA\Parameter (
@@ -91,7 +130,7 @@ class UserController extends Controller
     /**
      * Unfavorite a word
      * @OA\Delete (
-     *     path="api/entries/en/{word}/unfavorite",
+     *     path="entries/en/{word}/unfavorite",
      *     tags={"Words"},
      *     security={ {"token": {} }},
      *     @OA\Parameter (
@@ -121,7 +160,7 @@ class UserController extends Controller
     /**
      * List words history
      * @OA\Get (
-     *     path="api/user/me/history",
+     *     path="user/me/history",
      *     tags={"User"},
      *     security={ {"token": {} }},
      *     @OA\Parameter (

@@ -6,13 +6,13 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/auth/signin": {
+        "auth/signin": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Register",
-                "operationId": "d3e0ed17630d3cf91ce2882c4d243deb",
+                "operationId": "323ebe8791aed2425b08a406b46950c2",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -84,13 +84,13 @@
                 }
             }
         },
-        "/api/auth/signup": {
+        "auth/signup": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Register",
-                "operationId": "887d1dd2c4a5b34ac964b762c9555432",
+                "operationId": "b61b6b3ecf4aa46282031febd03c83de",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -177,13 +177,88 @@
                 }
             }
         },
-        "api/user/me/favorites": {
+        "user/me": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get authenticated user details",
+                "description": "Returns details about the currently authenticated user.",
+                "operationId": "getAuthenticatedUser",
+                "responses": {
+                    "200": {
+                        "description": "User details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "example": "9e0896b5-8e6f-45b0-ad81-2d1d03e70a2b"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "john@testo.com"
+                                        },
+                                        "email_verified_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-01-23T01:54:14.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-01-23T01:54:14.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "user/me/favorites": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "List favorite words",
-                "operationId": "ccfa2730efe2f7577c3d61f90f6c056a",
+                "operationId": "45d832760e48e351e04c2cf565b4f622",
                 "parameters": [
                     {
                         "name": "cursor",
@@ -266,13 +341,13 @@
                 ]
             }
         },
-        "api/entries/en/{word}/favorite": {
+        "entries/en/{word}/favorite": {
             "post": {
                 "tags": [
                     "Words"
                 ],
                 "summary": "Favorite a word",
-                "operationId": "55fae0ff1a5b085f880666a53f24ef0f",
+                "operationId": "c696bba311701d3f12798665834e4678",
                 "parameters": [
                     {
                         "name": "word",
@@ -300,13 +375,13 @@
                 ]
             }
         },
-        "api/entries/en/{word}/unfavorite": {
+        "entries/en/{word}/unfavorite": {
             "delete": {
                 "tags": [
                     "Words"
                 ],
                 "summary": "Unfavorite a word",
-                "operationId": "50f82d4a3924da3a9e2650d82a125b6f",
+                "operationId": "611336cff5225511dab24c58c37a0d95",
                 "parameters": [
                     {
                         "name": "word",
@@ -334,13 +409,13 @@
                 ]
             }
         },
-        "api/user/me/history": {
+        "user/me/history": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "List words history",
-                "operationId": "61128cd350d11f3492e691d18ceea44d",
+                "operationId": "3a380f7d921c924ac2b23dc202d1a67a",
                 "parameters": [
                     {
                         "name": "cursor",
@@ -423,13 +498,13 @@
                 ]
             }
         },
-        "api/entries/en": {
+        "entries/en": {
             "get": {
                 "tags": [
                     "Words"
                 ],
                 "summary": "List words",
-                "operationId": "7ef39d6f0cdc5ae67202f40fcff2909d",
+                "operationId": "fd4df9f5555cd5cb411dd39f6262ed2b",
                 "parameters": [
                     {
                         "name": "search",
@@ -512,10 +587,10 @@
                 ]
             }
         },
-        "/api/entries/en/{word}": {
+        "entries/en/{word}": {
             "get": {
                 "tags": [
-                    "Dictionary"
+                    "Words"
                 ],
                 "summary": "Get word details",
                 "description": "Returns details about the given word, including meanings, phonetics, and source links.",
@@ -684,10 +759,6 @@
         {
             "name": "Words",
             "description": "Words"
-        },
-        {
-            "name": "Dictionary",
-            "description": "Dictionary"
         }
     ]
 }
