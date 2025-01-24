@@ -12,7 +12,7 @@ class FavoriteAWordTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->postJson(route('entries.en.favorite', ['word' => 1]))
+            ->postJson(route('entries.en.favorite', ['word' => 'aardwolf']))
             ->assertNoContent();
 
         self::assertCount(1, $user->favoriteWords);

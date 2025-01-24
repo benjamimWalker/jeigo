@@ -277,11 +277,11 @@
                     {
                         "name": "word",
                         "in": "path",
-                        "description": "The ID of the word to favorite",
+                        "description": "The word to favorite",
                         "required": true,
                         "schema": {
-                            "type": "integer",
-                            "example": 35
+                            "type": "string",
+                            "example": "peach"
                         }
                     }
                 ],
@@ -311,11 +311,11 @@
                     {
                         "name": "word",
                         "in": "path",
-                        "description": "The ID of the word to unfavorite",
+                        "description": "The the word to unfavorite",
                         "required": true,
                         "schema": {
-                            "type": "integer",
-                            "example": 36
+                            "type": "string",
+                            "example": "peach"
                         }
                     }
                 ],
@@ -511,6 +511,156 @@
                     }
                 ]
             }
+        },
+        "/api/entries/en/{word}": {
+            "get": {
+                "tags": [
+                    "Dictionary"
+                ],
+                "summary": "Get word details",
+                "description": "Returns details about the given word, including meanings, phonetics, and source links.",
+                "operationId": "getWordDetails",
+                "parameters": [
+                    {
+                        "name": "word",
+                        "in": "path",
+                        "description": "The word to fetch information for",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Word details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "word": {
+                                                "type": "string",
+                                                "example": "documentation"
+                                            },
+                                            "phonetic": {
+                                                "type": "string",
+                                                "example": "/ˌdɒkjʊmənˈteɪʃən/"
+                                            },
+                                            "phonetics": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "text": {
+                                                            "type": "string",
+                                                            "example": "/ˌdɒkjʊmənˈteɪʃən/"
+                                                        },
+                                                        "audio": {
+                                                            "type": "string",
+                                                            "example": ""
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "meanings": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "partOfSpeech": {
+                                                            "type": "string",
+                                                            "example": "noun"
+                                                        },
+                                                        "definitions": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "definition": {
+                                                                        "type": "string",
+                                                                        "example": "Something transposed from a thought to a document; the written account of an idea."
+                                                                    },
+                                                                    "synonyms": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "antonyms": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "license": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "CC BY-SA 3.0"
+                                                    },
+                                                    "url": {
+                                                        "type": "string",
+                                                        "example": "https://creativecommons.org/licenses/by-sa/3.0"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "sourceUrls": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string",
+                                                    "example": "https://en.wiktionary.org/wiki/documentation"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Word not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Word not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -534,6 +684,10 @@
         {
             "name": "Words",
             "description": "Words"
+        },
+        {
+            "name": "Dictionary",
+            "description": "Dictionary"
         }
     ]
 }

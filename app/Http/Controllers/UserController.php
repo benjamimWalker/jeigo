@@ -67,9 +67,9 @@ class UserController extends Controller
      *     @OA\Parameter (
      *         name="word",
      *         in="path",
-     *         description="The ID of the word to favorite",
+     *         description="The word to favorite",
      *         required=true,
-     *         @OA\Schema(type="integer", example=35)
+     *         @OA\Schema(type="string", example="peach")
      *     ),
      *     @OA\Response(
      *         response=204,
@@ -81,9 +81,9 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function favoriteAWord(int $wordId): Response
+    public function favoriteAWord(Word $word): Response
     {
-        auth()->user()->favoriteWords()->syncWithoutDetaching([$wordId]);
+        auth()->user()->favoriteWords()->syncWithoutDetaching([$word->id]);
 
         return response()->noContent();
     }
@@ -97,9 +97,9 @@ class UserController extends Controller
      *     @OA\Parameter (
      *         name="word",
      *         in="path",
-     *         description="The ID of the word to unfavorite",
+     *         description="The the word to unfavorite",
      *         required=true,
-     *         @OA\Schema(type="integer", example=36)
+     *         @OA\Schema(type="string", example="peach")
      *     ),
      *     @OA\Response(
      *         response=204,
@@ -111,9 +111,9 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function unfavoriteAWord(int $wordId): Response
+    public function unfavoriteAWord(Word $word): Response
     {
-        auth()->user()->favoriteWords()->detach($wordId);
+        auth()->user()->favoriteWords()->detach($word->id);
 
         return response()->noContent();
     }

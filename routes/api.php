@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/me'], function (
 
 Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'entries/en'], function () {
     Route::get('', [WordController::class, 'index'])->name('entries.en.index');
-    Route::post('{word}/favorite', [UserController::class, 'favoriteAWord'])->name('entries.en.favorite');
-    Route::delete('{word}/unfavorite', [UserController::class, 'unFavoriteAWord'])->name('entries.en.unfavorite');
+    Route::get('{word:word}', [WordController::class, 'show'])->name('entries.en.show');
+    Route::post('{word:word}/favorite', [UserController::class, 'favoriteAWord'])->name('entries.en.favorite');
+    Route::delete('{word:word}/unfavorite', [UserController::class, 'unFavoriteAWord'])->name('entries.en.unfavorite');
 });

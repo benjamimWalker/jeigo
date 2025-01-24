@@ -13,7 +13,7 @@ class UnfavoriteAWordTest extends TestCase
         $user->favoriteWords()->syncWithoutDetaching([1]);
 
         $this->actingAs($user)
-            ->deleteJson(route('entries.en.unfavorite', ['word' => 1]))
+            ->deleteJson(route('entries.en.unfavorite', ['word' => 'bachelor']))
             ->assertNoContent();
 
         self::assertCount(0, $user->favoriteWords);
