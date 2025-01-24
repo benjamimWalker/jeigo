@@ -6,6 +6,7 @@ use App\Http\Controllers\WordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('', fn () => response()->json(['message' => 'Fullstack Challenge 🏅 - Dictionary']));
+
 Route::prefix('auth')->group(function () {
     Route::post('signup', [AuthController::class, 'register'])->name('signup');
     Route::post('signin', [AuthController::class, 'login'])
