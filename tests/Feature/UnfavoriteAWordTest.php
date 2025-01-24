@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\Word;
 use Tests\TestCase;
 
 class UnfavoriteAWordTest extends TestCase
@@ -10,7 +11,7 @@ class UnfavoriteAWordTest extends TestCase
     public function test_unfavorite_a_word_successfully(): void
     {
         $user = User::factory()->create();
-        $user->favoriteWords()->syncWithoutDetaching([1]);
+        $user->favoriteWords()->syncWithoutDetaching([Word::where('word', 'bachelor')->first()->id]);
 
         $this->actingAs($user)
             ->deleteJson(route('entries.en.unfavorite', ['word' => 'bachelor']))
