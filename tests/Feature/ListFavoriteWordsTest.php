@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\Word;
 use Tests\TestCase;
 
 class ListFavoriteWordsTest extends TestCase
@@ -10,7 +11,7 @@ class ListFavoriteWordsTest extends TestCase
     public function test_returns_user_favorite_words_successfully(): void
     {
         $user = User::factory()->create();
-        $user->favoriteWords()->attach([1, 2, 3]);
+        $user->favoriteWords()->attach(Word::take(3)->get());
 
         $this->actingAs($user)
             ->getJson(route('user.favorites'))

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\Word;
 use Tests\TestCase;
 
 class ListWordsHistoryTest extends TestCase
@@ -10,7 +11,7 @@ class ListWordsHistoryTest extends TestCase
     public function test_returns_user_words_history_sucessfully(): void
     {
         $user = User::factory()->create();
-        $user->wordHistory()->attach([1, 2, 3]);
+        $user->wordHistory()->attach(Word::take(3)->get());
 
         $this->actingAs($user)
             ->getJson(route('user.history'))
